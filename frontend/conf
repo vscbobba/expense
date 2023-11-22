@@ -1,6 +1,6 @@
 proxy_http_version 1.1;
 
-location /api/ { proxy_pass http://backend-dev.bobbascloud.co.in:8080/; }
+location /api/ { proxy_pass http://backend-dev.bobbascloud.online:8080/; }
 
 location /health {
   stub_status on;
