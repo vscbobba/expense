@@ -1,8 +1,8 @@
 source common.sh
 echo -e "\e[33m install software \e[0m"
 
-if [ -z "$1"];then
-  echo "enter passwd"
+if [ -z "$1" ];then
+  echo "Please enter passwd"
   exit
 fi
 
@@ -31,11 +31,11 @@ cd /app
 npm install &>>$my_log
 status_check
 
-echo -e "\e[39m restart backend and install mysql \e[0m"
+echo -e "\e[35m restart backend and install mysql \e[0m"
 systemctl daemon-reload &>>$my_log
 systemctl enable backend &>>$my_log
 systemctl start backend &>>$my_log
-mysql -h db-dev.bobbascloud.online -uroot -p{$sql_passwd} < /app/schema/backend.sql &>>$my_log
+mysql -h db-dev.bobbascloud.online -uroot -p${sql_passwd} < /app/schema/backend.sql &>>$my_log
 status_check
 
 systemctl restart backend &>>$my_log
