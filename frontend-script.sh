@@ -1,3 +1,4 @@
+source common.sh
 echo -e "\e[33m install software \e[0m"
 
 dnf install nginx -y &>$my_log
