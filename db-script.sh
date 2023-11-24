@@ -1,3 +1,4 @@
+source common.sh
 echo -e "\e[33m install software \e[0m"
 dnf module disable mysql -y &>>$my_log
 status_check

@@ -1,3 +1,4 @@
+source common.sh
 echo -e "\e[33m install software \e[0m"
 
 if [ -z "$1"];then
