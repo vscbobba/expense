@@ -1,0 +1,31 @@
+- name: install nginx
+  dnf:
+    name: nginx
+    state: latest
+
+- name: cleanup old directory
+  file:
+    path: /usr/share/nginx/html
+    state: absent
+
+- name: copy conf file
+  template:
+    src: conf
+    dest: /etc/nginx/default.d/expense.conf
+
+- name: create new Directory
+  file:
+    path: /usr/share/nginx/html
+    state: directory
+
+- name: Download and extract Content
+  unarchive:
+    src: https://expense-artifacts.s3.amazonaws.com/frontend.zip
+    dest: /usr/share/nginx/html
+    remote_src: yes
+
+- name: enable and start nginx
+  systemd:
+    name: nginx
+    state: restarted
+    enabled: yes
