@@ -1,0 +1,53 @@
+- name: setup backend server
+  hosts: backend-dev
+  become: yes
+  tasks:
+    - name: disable nodejs
+      shell: module disable nodejs -y
+    - name: enable nodejs
+      shell: module enable nodejs:18 -y
+    - name: install nodejs
+      dnf:
+        name: nodejs
+        state: present
+    - name: copy service file
+      copy:
+        src: service
+        dest: /etc/systemd/system/backend.service
+    - name: add user
+      user:
+        name: expense
+    - name: delete old directory
+      file:
+        path: /app
+        state: absent
+    - name: create directory
+      file:
+        path: /app
+        state: directory
+    - name: unzip content
+      unzip:
+        src: https://expense-artifacts.s3.amazonaws.com/backend.zip
+        dest: /app
+        remote_src: yes
+    - name: Download nodejs dependencies
+      shell: npm install
+      args:
+        chdir: /app
+    - name: install mysql
+      dnf:
+        name: mysql
+        state: present
+    - name: Load mysql schema
+      shell: mysql -h db-dev.bobbascloud.online -uroot -p{{ sql_passwd }} < /app/schema/backend.sql
+    - name: restart backend services
+      systemd:
+        name: backend
+        state: restarted
+        enabled: yes
+        daemon-reload: yes
+
+
+
+
+

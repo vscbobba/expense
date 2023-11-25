@@ -1,0 +1,21 @@
+- name: setup db server
+  hosts: db-dev
+  become: yes
+  tasks:
+    - name: disable mysql
+      shell: dnf module disable mysql -y
+    - name: copy repo file
+      copy:
+        src: repo
+        dest: /etc/yum.repos.d/mysql.repo
+    - name: install mysql
+      dnf:
+        name: mysql-community-server
+        state: present
+    - name: enable and start mysql
+      systemd:
+        name: mysqld
+        state: restarted
+        enabled: yes
+    - name: "set mysqlpasswd"
+      shell: mysql_secure_installation --set-root-pass {{sql_passwd}}
