@@ -3,9 +3,9 @@
   become: yes
   tasks:
     - name: disable nodejs
-      shell: module disable nodejs -y
+      shell: dnf module disable nodejs -y
     - name: enable nodejs
-      shell: module enable nodejs:18 -y
+      shell: dnf module enable nodejs:18 -y
     - name: install nodejs
       dnf:
         name: nodejs
@@ -26,7 +26,7 @@
         path: /app
         state: directory
     - name: unzip content
-      unzip:
+      unarchive:
         src: https://expense-artifacts.s3.amazonaws.com/backend.zip
         dest: /app
         remote_src: yes
